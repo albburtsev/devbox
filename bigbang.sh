@@ -29,13 +29,13 @@ if [[ "$pm" != 'unknown' ]]; then
 	# Installing git
 	command -v git || {
 		echo " -> Installing git"
-		`$pm install git`
+		$pm install git
 	}
 
 	# Installing node.js
 	command -v node || {
 		echo " -> Installing node.js"
-		`$pm install node`
+		$pm install node
 	}
 
 	# Installing npm
