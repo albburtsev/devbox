@@ -4,8 +4,8 @@ My development tools
 
 ## Big Bang
 
-Installed git, node.js, npm, grunt for Linux and Mac OS.
-For Mac OS installed [Homebrew](http://mxcl.github.com/homebrew/) too.
+Installs git, node.js, npm, grunt for Linux and Mac OS.
+For Mac OS installs [Homebrew](http://mxcl.github.com/homebrew/) too.
 
 Usage:
 
