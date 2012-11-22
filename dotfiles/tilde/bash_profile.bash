@@ -39,7 +39,7 @@ command -v brew >/dev/null 2>&1 && PATH="$(brew --prefix coreutils)/libexec/gnub
 export PATH
 
 # Load prompt and aliases
-for file in ~/dotfiles/includes/{bash_prompt,bash_aliases,bash_functions}; do
+for file in ~/devbox/dotfiles/includes/{bash_prompt,bash_aliases,bash_functions}; do
 	[ -r "$file.bash" ] && source "$file.bash"
 done
 unset file
