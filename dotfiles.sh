@@ -4,9 +4,6 @@
 
 echo "Installing dotfiles..."
 
-cd ~
-git clone https://github.com/albburtsev/devbox.git .
-cd dotfiles
-python sync.py
+cd ~ && git clone https://github.com/albburtsev/devbox.git && mv devbox/dotfiles . && rm -rf devbox && cd dotfiles && python sync.py
 
 echo "Dotfiles installed successfully."
