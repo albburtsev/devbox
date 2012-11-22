@@ -1,0 +1,9 @@
+# Python stuff
+*.pyc
+
+# Folder view configuration files
+.DS_Store
+Desktop.ini
+
+# Installed NPM modules
+node_modules
