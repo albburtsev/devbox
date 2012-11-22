@@ -25,7 +25,7 @@
 	cam = commit -am
 	co = checkout
 	d = diff --color-words
-	s = status -sb
+	s = status -s
 	l = log --graph --pretty=format:'%C(magenta)%h%C(blue)%d%Creset %s %C(blue bold)- %an, %ar%Creset'
 	ll = log --stat --abbrev-commit
 	ignore = !([ ! -e .gitignore ] && touch .gitignore) | echo $2 >> .gitignore
@@ -42,7 +42,3 @@
 #	email = burtsev@burtsev.me
 [include]
 	path = ~/.gitlocal
-
-[user]
-	name = Alexander Burtsev
-	email = burtsev@burtsev.me
