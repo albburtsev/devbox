@@ -1,3 +1,5 @@
+#!/bin/bash
+
 unamestr=`uname`
 pm='unknown'
 

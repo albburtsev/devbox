@@ -12,3 +12,14 @@ Usage:
 ```
 curl https://raw.github.com/albburtsev/devbox/master/bigbang.sh | sh
 ```
+
+## Dotfiles
+
+Added useful dotfiles.
+Based on [sapegin/dotfiles](https://github.com/sapegin/dotfiles).
+
+Usage:
+
+```
+curl https://raw.github.com/albburtsev/devbox/master/dotfiles.sh | sh
+```
