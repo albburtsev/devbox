@@ -296,10 +296,10 @@ defaults write com.apple.appstore WebKitDeveloperExtras -bool true
 defaults write com.apple.terminal StringEncodings -array 4
 
 # Use a modified version of the Pro theme by default in Terminal.app
-open "$HOME/devbox/themes/Solarized Dark.terminal"
-sleep 1 # Wait a bit to make sure the theme is loaded
-defaults write com.apple.terminal "Default Window Settings" -string "Solarized Dark"
-defaults write com.apple.terminal "Startup Window Settings" -string "Solarized Dark"
+#open "$HOME/devbox/themes/Solarized Dark.terminal"
+#sleep 1 # Wait a bit to make sure the theme is loaded
+#defaults write com.apple.terminal "Default Window Settings" -string "Solarized Dark"
+#defaults write com.apple.terminal "Startup Window Settings" -string "Solarized Dark"
 
 # Enable “focus follows mouse” for Terminal.app and all X11 apps
 # i.e. hover over a window and start typing in it without clicking first
