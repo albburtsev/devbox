@@ -40,5 +40,7 @@
 # [user]
 #	name = Alexander Burtsev
 #	email = burtsev@burtsev.me
+
+# Worked only for git 1.7.10+
 [include]
 	path = ~/.gitlocal
