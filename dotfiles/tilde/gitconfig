@@ -8,7 +8,7 @@
 	old = red bold
 	new = magenta bold
 [core]
-	editor = nano
+	editor = mcedit
 	# http://stackoverflow.com/questions/136178/git-diff-handling-long-lines
 	# If doesn't work, try: pager = less -+$LESS -FRX
 	pager = less -r
