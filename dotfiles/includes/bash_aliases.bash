@@ -36,7 +36,7 @@ alias dotfiles="cd "$HOME/dotfiles" && git pull && ./sync.py && cd - > /dev/null
 alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl"
 
 # Convert line endings to UNIX
-#alias dos2unix="perl -pi -e 's/\r\n?/\n/g'"
+alias dos2unix="perl -pi -e 's/\r\n?/\n/g'"
 
 # Password generator
 #password() { openssl rand -base64 ${1:-8} | c; }
