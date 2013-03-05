@@ -1,0 +1,13 @@
+{
+  "name": "{%= project %}",
+  "author": {
+    "name": "{%= author_name %}",
+    "url": "{%= author_url %}"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-concat": "~0.1.3",
+    "grunt-contrib-stylus": "~0.4.1",
+    "grunt-contrib-watch": "~0.3.0"
+  }
+}
