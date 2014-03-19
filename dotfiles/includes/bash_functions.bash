@@ -86,7 +86,9 @@ add-ssh-host() {
 
 # Adds ~/.ssh/config to the ssh autocomplete
 _ssh_load_autocomplete() {
-	complete -W "$(awk '/^\s*Host\s*/ { sub(/^\s*Host /, ""); print; }' ~/.ssh/config)" ssh
+    if [ -f ~/.ssh/config ]; then
+	   complete -W "$(awk '/^\s*Host\s*/ { sub(/^\s*Host /, ""); print; }' ~/.ssh/config)" ssh
+    fi
 }
 _ssh_load_autocomplete
 
