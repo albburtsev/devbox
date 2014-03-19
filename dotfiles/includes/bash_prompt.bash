@@ -1,114 +1,87 @@
-# Based on https://raw.github.com/sapegin/dotfiles/master/includes/bash_prompt.bash
+#
+# Clean and minimalistic Bash prompt
+# Author: Artem Sapegin, sapegin.me
+# 
+# Inspired by: https://github.com/sindresorhus/pure & https://github.com/dreadatour/dotfiles/blob/master/.bash_profile
+#
+# Notes:
+# - $local_username - username you don’t want to see in the prompt - can be defined in ~/.bashlocal : `local_username="admin"`
+# - Colors ($RED, $GREEN) - defined in ../tilde/bash_profile.bash
+#
 
-# Inspired by: https://github.com/dreadatour/dotfiles/blob/master/.bash_profile
 
-# Setup color variables
-color_is_on=
-color_red=
-color_green=
-color_yellow=
-color_blue=
-color_white=
-color_gray=
-color_bg_red=
-color_off=
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	color_is_on=true
-	color_red="\[$(/usr/bin/tput setaf 1)\]"
-	color_green="\[$(/usr/bin/tput setaf 2)\]"
-	color_yellow="\[$(/usr/bin/tput setaf 3)\]"
-	color_blue="\[$(/usr/bin/tput setaf 6)\]"
-	color_white="\[$(/usr/bin/tput setaf 7)\]"
-	color_gray="\[$(/usr/bin/tput setaf 8)\]"
-	color_off="\[$(/usr/bin/tput sgr0)\]"
-	color_error="$(/usr/bin/tput setab 1)$(/usr/bin/tput setaf 7)"
-	color_error_off="$(/usr/bin/tput sgr0)"
+# User color
+case $(id -u) in
+	0) user_color="$RED" ;;  # root
+	*) user_color="$GREEN" ;;
+esac
 
-	# Set user color
-	case `id -u` in
-		0) color_user=$color_red ;;
-		*) color_user=$color_green ;;
-	esac
-fi
+# Symbols
+prompt_symbol="❯"
+prompt_clean_symbol="☀ "
+prompt_dirty_symbol="☂ "
+prompt_venv_symbol="☁ "
 
-# Some kind of optimization - check if git installed only on config load
-PS1_GIT_BIN=$(which git 2>/dev/null)
+function prompt_command() {
+	# Local or SSH session?
+	local remote=
+	[ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] && remote=1
 
-function prompt_command {
-	local PS1_GIT=
-	local GIT_BRANCH=
-	local GIT_DIRTY=
-	local PWDNAME="$PWD"
+	# Git branch name and work tree status (only when we are inside Git working tree)
+	local git_prompt=
+	if [[ "true" = "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]]; then
+		# Branch name
+		local branch="$(git symbolic-ref HEAD 2>/dev/null)"
+		branch="${branch##refs/heads/}"
 
-	# Beautify working directory name
-	if [ "$HOME" == "$PWD" ]; then
-		PWDNAME="~"
-	elif [ "$HOME" == "${PWD:0:${#HOME}}" ]; then
-		PWDNAME="~${PWD:${#HOME}}"
-	fi
+		# Working tree status (red when dirty)
+		local dirty=
+		# Modified files
+		git diff --no-ext-diff --quiet --exit-code --ignore-submodules 2>/dev/null || dirty=1
+		# Untracked files
+		[ -z "$dirty" ] && test -n "$(git status --porcelain)" && dirty=1
 
-	# Parse git status and get git variables
-	if [[ ! -z "$PS1_GIT_BIN" ]]; then
-		# Check if we are in git repo
-		local CUR_DIR="$PWD"
-		while [[ ! -d "${CUR_DIR}/.git" ]] && [[ ! "${CUR_DIR}" == "/" ]] && [[ ! "${CUR_DIR}" == "~" ]] && [[ ! "${CUR_DIR}" == "" ]]; do CUR_DIR="${CUR_DIR%/*}"; done
-		if [[ -d "${CUR_DIR}/.git" ]]; then
-			# Get git branch
-			GIT_BRANCH="$($PS1_GIT_BIN symbolic-ref HEAD 2>/dev/null)"
-			if [[ ! -z "$GIT_BRANCH" ]]; then
-				GIT_BRANCH="${GIT_BRANCH#refs/heads/}"
-
-				# Get git status
-				local GIT_STATUS="$($PS1_GIT_BIN status --porcelain 2>/dev/null)"
-				[[ -n "$GIT_STATUS" ]] && GIT_DIRTY=1
-			fi
+		# Format Git info
+		if [ -n "$dirty" ]; then
+			git_prompt=" $RED$prompt_dirty_symbol$branch$NOCOLOR"
+		else
+			git_prompt=" $GREEN$prompt_clean_symbol$branch$NOCOLOR"
 		fi
 	fi
 
-	# Build B&W prompt for git
-	[[ ! -z "$GIT_BRANCH" ]] && PS1_GIT=" #${GIT_BRANCH}"
-
-	# Calculate prompt length
-	local PS1_length=$((${#USER}+${#HOSTNAME}+${#PWDNAME}+${#PS1_GIT}+3))
-	local FILL=
-
-	# If length is greater, than terminal width
-	if [[ $PS1_length -gt $COLUMNS ]]; then
-		# Strip working directory name
-		PWDNAME="...${PWDNAME:$(($PS1_length-$COLUMNS+3))}"
-	else
-		# Else calculate fillsize
-		local fillsize=$(($COLUMNS-$PS1_length))
-		FILL="$color_gray"
-		while [[ $fillsize -gt 0 ]]; do FILL="${FILL}─"; fillsize=$(($fillsize-1)); done
-		FILL="${FILL}${color_off}"
+	# Virtualenv
+	local venv_prompt=
+	if [ -n "$VIRTUAL_ENV" ]; then
+	    venv_prompt=" $BLUE$prompt_venv_symbol$(basename $VIRTUAL_ENV)$NOCOLOR"
 	fi
 
-	if $color_is_on; then
-		# Git status for prompt
-		if [ ! -z "$GIT_BRANCH" ]; then
-			if [ -z "$GIT_DIRTY" ]; then
-				PS1_GIT=" #${color_green}${GIT_BRANCH}${color_off}"
-			else
-				PS1_GIT=" #${color_red}${GIT_BRANCH}${color_off}"
-			fi
-		fi
-	fi
+	# Only show username if not default
+	local user_prompt=
+	[ "$USER" != "$local_username" ] && user_prompt="$user_color$USER$NOCOLOR"
 
-	# Set new color prompt
-	PS1="${color_user}${USER}${color_off}@${color_yellow}${HOSTNAME}${color_off}:${color_white}${PWDNAME}${color_off}${PS1_GIT} ${FILL}\n→ "
+	# Show hostname inside SSH session
+	local host_prompt=
+	[ -n "$remote" ] && host_prompt="@$YELLOW$HOSTNAME$NOCOLOR"
 
-	# Get cursor position and add new line if we're not in first column
-	echo -en "\033[6n" && read -sdR CURPOS
-	[[ "${CURPOS##*;}" -gt 1 ]] && echo "${color_error}●${color_error_off}"
+	# Show delimiter if user or host visible
+	local login_delimiter=
+	[ -n "$user_prompt" ] || [ -n "$host_prompt" ] && login_delimiter=":"
+
+	# Format prompt
+	first_line="$user_prompt$host_prompt$login_delimiter$WHITE\w$NOCOLOR$git_prompt$venv_prompt"
+	# Text (commands) inside \[...\] does not impact line length calculation which fixes stange bug when looking through the history
+	# $? is a status of last command, should be processed every time prompt prints
+	second_line="\`if [ \$? = 0 ]; then echo \[\$CYAN\]; else echo \[\$RED\]; fi\`\$prompt_symbol\[\$NOCOLOR\] "
+	PS1="\n$first_line\n$second_line"
+
+	# Multiline command
+	PS2="\[$CYAN\]$prompt_symbol\[$NOCOLOR\] "
 
 	# Terminal title
-	TITLE=`basename ${PWDNAME}`
-	[ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] && TITLE="${TITLE} - ${HOSTNAME}"
-	echo -ne "\033]0;${TITLE}"; echo -ne "\007"
+	local title="$(basename "$PWD")"
+	[ -n "$remote" ] && title="$title \xE2\x80\x94 $HOSTNAME"
+	echo -ne "\033]0;$title"; echo -ne "\007"
 }
 
-# Set prompt command (title update and color prompt)
-PROMPT_COMMAND=prompt_command
-# Set new B&W prompt (will be overwritten in `prompt_command` later with color prompt)
-PS1='\u@\h:\w\$ '
+# Show awesome prompt only if Git is istalled
+command -v git >/dev/null 2>&1 && PROMPT_COMMAND=prompt_command

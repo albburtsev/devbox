@@ -32,6 +32,20 @@ done
 export LC_ALL=en_US.UTF-8
 export LANG="en_US"
 
+# Colors
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
+GRAY="$(tput setaf 8)"
+BOLD="$(tput bold)"
+UNDERLINE="$(tput sgr 0 1)"
+INVERT="$(tput sgr 1 0)"
+NOCOLOR="$(tput sgr0)"
+
 # Extend $PATH
 [ -d ~/bin ] && PATH="~/bin:$PATH"
 PATH="/usr/local/bin:$PATH"
