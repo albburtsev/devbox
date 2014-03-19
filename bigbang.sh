@@ -6,13 +6,10 @@ pm='unknown'
 if [[ "$unamestr" == 'Darwin' ]]; then
 
 	# Great! It's Mac OS
-
-	# Installing brew
-	command -v brew || {
-		echo " -> Installing brew"
+	command -v brew >/dev/null || {
+		echo " > Install brew"
 		ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
 	}
-
 	pm='brew'
 
 elif [[ "$unamestr" == 'Linux' ]]; then
@@ -27,31 +24,43 @@ fi
 echo "Your package manager: $pm"
 
 if [[ "$pm" != 'unknown' ]]; then
-
-	# Installing git
-	command -v git || {
-		echo " -> Installing git"
+	command -v git >/dev/null || {
+		echo " > Install git"
 		$pm install git
 	}
 
-	# Installing node.js
-	command -v node || {
-		echo " -> Installing node.js"
+	command -v node >/dev/null || {
+		echo " > Install node and npm"
 		$pm install node
 	}
 
-	# Installing npm
-	command -v npm || {
-		echo " -> Installing npm"
-		curl https://npmjs.org/install.sh | sh
+    command -v jq >/dev/null || {
+        echo " > Install jq: http://stedolan.github.io/jq/"
+        if [[ "$pm" == 'brew' ]]; then
+            brew install jq
+        else
+            git clone https://github.com/stedolan/jq.git
+            cd jq
+            autoreconf -i
+            ./configure
+            make
+            make install
+            cd ..
+            rm -rf jq/
+        fi
+    }
+
+	command -v grunt >/dev/null || {
+		echo " > Install grunt"
+		npm install -g grunt-cli
 	}
 
-	# Installing npm grunt
-	command -v grunt || {
-		echo " -> Installing grunt"
-		npm install -g grunt
-	}
+    command -v yo >/dev/null || {
+        echo " > Install yeoman"
+        npm install -g yo
+    }
 
+    echo "All required packages installed!"
 else
 	echo "Package manager not detected. Sad :-("
 fi

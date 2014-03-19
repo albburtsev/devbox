@@ -46,10 +46,19 @@ UNDERLINE="$(tput sgr 0 1)"
 INVERT="$(tput sgr 1 0)"
 NOCOLOR="$(tput sgr0)"
 
-# Extend $PATH
-[ -d ~/bin ] && PATH="~/bin:$PATH"
-PATH="/usr/local/bin:$PATH"
-command -v brew >/dev/null 2>&1 && PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+# Prepend $PATH without duplicates
+function _prepend_path() {
+	if ! $( echo "$PATH" | tr ":" "\n" | grep -qx "$1" ) ; then
+		PATH="$1:$PATH"
+	fi
+}
+
+# Construct $PATH
+PATH='/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+[ -d /usr/local/bin ] && _prepend_path "/usr/local/bin"
+[ -d /usr/local/share/npm/bin ] && _prepend_path "/usr/local/share/npm/bin"
+[ -d ~/devbox/dotfiles/bin ] && _prepend_path "$HOME/devbox/dotfiles/bin"
+[ -d ~/bin ] && _prepend_path "$HOME/bin"
 export PATH
 
 # Load prompt and aliases
