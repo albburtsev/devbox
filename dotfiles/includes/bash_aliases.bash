@@ -29,7 +29,10 @@ alias rm="rm -i"
 alias update="sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm update npm -g; npm update -g"
 
 # Update dotfiles
-alias dotfiles="cd "$HOME/dotfiles" && git pull && ./sync.py && cd - > /dev/null 2>&1 && nyan"
+alias dotfiles="pushd "$HOME/devbox/dotfiles" > /dev/null 2>&1; git pull && ./sync.py && . "$HOME/.bashrc"; popd > /dev/null 2>&1; nyan"
+
+# Update devbox
+alias devbox="sh $HOME/devbox/bigbang.sh && dotfiles"
 
 # Empty the Trash on all mounted volumes and the main HDD
 # Also, clear Apple’s System Logs to improve shell startup speed
