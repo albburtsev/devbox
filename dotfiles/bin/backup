@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+# Save directory into the archive and copy archive on remote host
+# Dump structure and contents of MySQL database
+# Add regular backup into user crontab
+#
+# Usage:
+#	backup
+#   backup --init
+#   backup --cron <hourly|daily|weekly|monthly>
+#	backup --force
+#
+# Author: Alexander Burtsev, http://burtsev.me
+# License: MIT
+# https://github.com/albburtsev/devbox
+# 
+# Acknowledgements: Artem Sapegin, https://github.com/sapegin/dotfiles
+#
+
+# Common stuff
+RED="$(tput setaf 1)"
+CYAN="$(tput setaf 6)"
+UNDERLINE="$(tput sgr 0 1)"
+NOCOLOR="$(tput sgr0)"
+function header() { echo -e "$UNDERLINE$CYAN$1$NOCOLOR\n"; }
+function error() { echo -e "$UNDERLINE$RED$1$NOCOLOR\n"; }
+
+function usage() {
+	echo "Usage:"
+	echo "  `basename $0`"
+	echo "  `basename $0` --init"
+	echo "  `basename $0` --cron <hourly|daily|weekly|monthly>"
+	echo "  `basename $0` --force"
+	echo
+}
+
+# Create config file
+if [ "$1" == "--init" ]; then
+	# todo: create config file
+	echo ""
+
+# Add backup into user crontab
+elif [ "$1" == "--cron" ]; then
+	# todo: add backup into user crontab
+	echo ""
+
+# Create backup
+else
+	if [ -f backup_config.sh ]; then
+		echo "Config exists"
+		# http://stackoverflow.com/questions/5228345/bash-script-how-to-reference-a-file-for-variables
+
+	elif [ "$1" == "--force" ]; then
+		echo "Force creating archive"
+	else
+		error "Config file does't exists, try with --init";
+		usage
+	fi
+fi
