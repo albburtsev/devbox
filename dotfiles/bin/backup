@@ -60,10 +60,12 @@ function save_archive() {
 	source $webdav_config
 	curl --user $webdav_user":"$webdav_password --request MKCOL $webdav_host"backup/" >/dev/null 2>&1
 	curl --user $webdav_user":"$webdav_password --request MKCOL $webdav_host"backup/"$wd_name >/dev/null 2>&1
-	curl --user $webdav_user":"$webdav_password -T "$1" $webdav_host"backup/"$wd_name"/" || {
-		error "Saving error."
+	error_text=`curl -s --user $webdav_user":"$webdav_password -T "$1" $webdav_host"backup/"$wd_name"/"`
+
+	if [ "$error_text" != "" ]; then
+		error "ERROR: $error_text"
 		exit 1
-	}
+	fi
 
 	rm $1
 }
