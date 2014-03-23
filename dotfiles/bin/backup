@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Save directory into the archive and copy archive on remote host
+# Save directory into the archive and copy archive to remote host
 # Dump structure and contents of MySQL database
 # Add regular backup into user crontab
 #
@@ -8,6 +8,7 @@
 #   backup
 #   backup --init
 #   backup --cron <hourly|daily|weekly|monthly>
+#   backup --config
 #
 # Author: Alexander Burtsev, http://burtsev.me
 # License: MIT
@@ -51,6 +52,44 @@ function create_webdav_config() {
 	echo "webdav_password=$webdav_password" >> $webdav_config
 }
 
+function create_backup_config() {
+	touch $backup_config
+	read -p "Backup name (default: $wd_name): " backup_name
+	read -p "Max number of backups (default: ∞): " backups_limit
+	read -p "Patterns for exclude (comma separated): " exclude
+
+	backup_name=${backup_name:-$wd_name}
+
+	echo "backup_name=$backup_name" >> $backup_config
+	echo "backups_limit=$backups_limit" >> $backup_config
+	echo "exclude=$exclude" >> $backup_config
+
+	command -v mysql >/dev/null 2>&1 && {
+		read -p "Do you want dump MySQL database? (y/n): " do_mysql_dump
+		if [ "$do_mysql_dump" == "y" ] || [ "$do_mysql_dump" == "yes" ]; then
+			read -p "MySQL host (default: localhost): " mysql_host
+			read -p "MySQL database name: " mysql_dbname
+			read -p "MySQL user: " mysql_user
+			read -p "MySQL password: " mysql_password
+			read -p "MySQL port (default: 3306): " mysql_port
+
+			mysql_host=${mysql_host:-localhost}
+			mysql_port=${mysql_port:-3306}
+
+			echo -e "\n# MySQL config" >> $backup_config
+			echo "mysql_host=$mysql_host" >> $backup_config
+			echo "mysql_dbname=$mysql_dbname" >> $backup_config
+			echo "mysql_user=$mysql_user" >> $backup_config
+			echo "mysql_password=$mysql_password" >> $backup_config
+			echo "mysql_port=$mysql_port" >> $backup_config
+		fi
+	}
+
+	echo -e "\n# Triggers" >> $backup_config
+	echo -e "function before_backup() {\n\t:\n\t# Executed before backup\n}" >> $backup_config
+	echo -e "function after_backup() {\n\t:\n\t# Executed after backup\n}" >> $backup_config
+}
+
 function save_archive() {
 	if [ ! -f $webdav_config ]; then
 		exit 1
@@ -59,27 +98,37 @@ function save_archive() {
 	header "Saving to remote host."
 	source $webdav_config
 	curl --user $webdav_user":"$webdav_password --request MKCOL $webdav_host"backup/" >/dev/null 2>&1
-	curl --user $webdav_user":"$webdav_password --request MKCOL $webdav_host"backup/"$wd_name >/dev/null 2>&1
-	error_text=`curl -s --user $webdav_user":"$webdav_password -T "$1" $webdav_host"backup/"$wd_name"/"`
+	curl --user $webdav_user":"$webdav_password --request MKCOL $webdav_host"backup/"$1 >/dev/null 2>&1
+	error_text=`curl -s --user $webdav_user":"$webdav_password -T "$2" $webdav_host"backup/"$1"/"`
 
 	if [ "$error_text" != "" ]; then
 		error "ERROR: $error_text"
 		exit 1
 	fi
 
-	rm $1
+	rm $2
 }
 
 # Archive & config names
 wd_name=${PWD##*/}
 webdav_config=~/.webdav
+backup_config=.backup_config
 archive_suffix=`date "+%Y-%m-%d-%H-%M-%S"`
-archive_name=$wd_name"_"$archive_suffix".tar.gz"
 
-# Create config file
+# Create config file for remote saving
 if [ "$1" == "--init" ]; then
 	if [ ! -f $webdav_config ]; then
 		create_webdav_config
+	else
+		header "Webdav config already exists: $webdav_config"
+	fi
+
+# Create backup config
+elif [ "$1" == "--config" ]; then
+	if [ ! -f $backup_config ]; then
+		create_backup_config
+	else
+		header "Backup config already exists: $backup_config"
 	fi
 
 # Add backup into user crontab
@@ -93,14 +142,23 @@ else
 		header "Webdav config for remote saving doesn’t exist. Try: `basename $0` --init\n"
 	fi
 
-	if [ -f .backup_config ]; then
-		echo "Config exists"
+	if [ -f $backup_config ]; then
+		source $backup_config
+		archive_name=$backup_name"_"$archive_suffix".tar.gz"
+
+		if [ $mysql_host ]; then
+			:
+			# todo: mysql dump
+		fi
 
 	else
 		header "Creating an archive"
-		tar -cz --file="$archive_name" -C .. "$wd_name" 2>/dev/null
-		echo -e "Archive saved.\n"
-		save_archive $archive_name
-		echo "Done."
+		archive_name=$wd_name"_"$archive_suffix".tar.gz"
+		backup_name=$wd_name
 	fi
+
+	tar -cz --file="$archive_name" -C .. "$wd_name" 2>/dev/null
+	echo -e "Archive saved.\n"
+	save_archive $backup_name $archive_name 
+	echo "Done."
 fi
