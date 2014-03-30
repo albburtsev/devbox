@@ -56,13 +56,13 @@ function create_backup_config() {
 	touch $backup_config
 	read -p "Backup name (default: $wd_name): " backup_name
 	read -p "Max number of backups (default: ∞): " backups_limit
-	read -p "Patterns for exclude (comma separated): " exclude
+	read -p "Patterns for exclude (whitespace separated): " exclude
 
 	backup_name=${backup_name:-$wd_name}
 
 	echo "backup_name=$backup_name" >> $backup_config
 	echo "backups_limit=$backups_limit" >> $backup_config
-	echo "exclude=$exclude" >> $backup_config
+	echo "exclude=\"$exclude\"" >> $backup_config
 
 	command -v mysql >/dev/null 2>&1 && {
 		read -p "Do you want dump MySQL database? (y/n): " do_mysql_dump
@@ -150,6 +150,13 @@ else
 		source $backup_config
 		archive_name=$backup_name"_"$archive_suffix".tar.gz"
 
+		exclude_joined=""
+		IFS=' ' read -a exclude_array <<< "$exclude"
+		if [ ${#exclude_array[@]} != 0 ]; then
+			exclude_joined=$(printf " --exclude='$wd_name/%s'" "${exclude_array[@]}")
+			exclude_joined=${exclude_joined:1}
+		fi
+
 		if [ $mysql_host ] && [ $mysql_dbname ]; then
 			command -v mysqldump >/dev/null 2>&1 || {
 				error "ERROR: command 'mysqldump' not found"
@@ -170,9 +177,10 @@ else
 		header "Creating an archive"
 		archive_name=$wd_name"_"$archive_suffix".tar.gz"
 		backup_name=$wd_name
+		exclude_joined=""
 	fi
 
-	tar -cz --file="$archive_name" -C .. "$wd_name" 2>/dev/null
+	eval "tar -cz "$exclude_joined" --file="$archive_name" -C .. "$wd_name 2>/dev/null
 	save_archive $backup_name $archive_name "Saving archive to remote host."
 	echo -e "Archive saved.\n"
 	echo "Done."
