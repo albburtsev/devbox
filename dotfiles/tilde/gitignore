@@ -1,9 +1,20 @@
 # Python stuff
 *.pyc
+VENV
 
 # Folder view configuration files
 .DS_Store
 Desktop.ini
 
+# Thumbnail cache files
+._*
+Thumbs.db
+
+# IDEs stuff
+.idea
+
 # Installed NPM modules
 node_modules
+
+# Installed Bower packages
+bower_components
