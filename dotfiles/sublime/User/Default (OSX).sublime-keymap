@@ -1,0 +1,10 @@
+[
+	{ "keys": ["super+d"], "command": "duplicate_line" },
+	{ "keys": ["super+y"], "command": "run_macro_file", "args": {"file": "Packages/Default/Delete Line.sublime-macro"} },
+	{ "keys": ["super+v"], "command": "paste_and_indent" },
+	{ "keys": ["super+shift+v"], "command": "paste" },
+	{ "keys": ["f3"], "command": "find_next" },
+	{ "keys": ["super+r"], "command": "show_panel", "args": {"panel": "replace"} },
+	{ "keys": ["super+g"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
+	{ "keys": ["super+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": "@"} }
+]

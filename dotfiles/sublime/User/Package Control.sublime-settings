@@ -1,0 +1,21 @@
+{
+	"auto_upgrade_last_run": null,
+	"installed_packages":
+	[
+		"AdvancedNewFile",
+		"Better CoffeeScript",
+		"DocBlockr",
+		"eco",
+		"EditorConfig",
+		"Emmet",
+		"GitGutter",
+		"Hayaku - tools for writing CSS faster",
+		"Koken",
+		"MarkdownEditing",
+		"Package Control",
+		"Stylus",
+		"SublimeLinter",
+		"SublimeLinter-coffeelint",
+		"Theme - Soda"
+	]
+}
