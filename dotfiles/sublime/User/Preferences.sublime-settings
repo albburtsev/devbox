@@ -1,58 +1,14 @@
 {
-	"auto_complete_delay": 1000,
-	"auto_match_enabled": false,
-	"bold_folder_labels": true,
-	"caret_extra_width": 1,
-	"caret_style": "solid",
-	"color_scheme": "Packages/User/Tomorrow (SL).tmTheme",
-	"create_window_at_startup": false,
-	"default_line_ending": "unix",
-	"detect_indentation": true,
-	"detect_slow_plugins": false,
-	"drag_text": true,
-	"enable_tab_scrolling": false,
-	"fallback_encoding": "Cyrillic (Windows 1251)",
-	"file_exclude_patterns":
-	[
-		".*_*",
-		"*.pyc",
-		"*.pyo",
-		".DS_Store",
-		"*.psd",
-		"*.db",
-		"*.sublime-workspace"
-	],
-	"folder_exclude_patterns":
-	[
-		".git",
-		"node_modules"
-	],
-	"font_face": "Consolas",
-	"font_size": 17.0,
-	"hayaku_CSS_colors_case": "lowercase",
-	"hayaku_CSS_numbers_leading_zero": false,
-	"hayaku_CSS_syntax_autoguess":
-	[
-		"selector {",
-		"	property:value;",
-		"	}"
-	],
-	"highlight_line": true,
+	"color_scheme": "Packages/User/Monokai (SL).tmTheme",
 	"ignored_packages":
 	[
-		"Markdown",
-		"Vintage"
+		"Vintage",
+		"Markdown"
 	],
-	"line_padding_bottom": 1,
-	"line_padding_top": 1,
-	"open_files_in_new_window": false,
 	"rulers":
 	[
-		120
+		100
 	],
-	"save_on_focus_lost": true,
-	"scroll_past_end": true,
-	"tab_completion": true,
-	"theme": "Soda Light 3.sublime-theme",
-	"wide_caret": true
+	"create_window_at_startup": false,
+	"default_line_ending": "unix"
 }
