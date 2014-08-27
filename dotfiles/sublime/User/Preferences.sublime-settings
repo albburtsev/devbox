@@ -1,14 +1,23 @@
 {
 	"color_scheme": "Packages/User/Monokai (SL).tmTheme",
+	"create_window_at_startup": false,
+	"default_line_ending": "unix",
+	"drag_text": false,
+	"enable_tab_scrolling": false,
+	"fallback_encoding": "Cyrillic (Windows 1251)",
+	"folder_exclude_patterns":
+	[
+		".git",
+		"node_modules"
+	],
+	"highlight_line": true,
 	"ignored_packages":
 	[
-		"Vintage",
 		"Markdown"
 	],
 	"rulers":
 	[
-		100
+		120
 	],
-	"create_window_at_startup": false,
-	"default_line_ending": "unix"
+	"save_on_focus_lost": true
 }
