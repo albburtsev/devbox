@@ -7,7 +7,9 @@
 		"Git",
 		"MarkdownEditing",
 		"Package Control",
+		"PHP-Twig",
 		"Stylus",
-		"SublimeLinter"
+		"SublimeLinter",
+		"SublimeLinter-jscs"
 	]
 }
