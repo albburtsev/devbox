@@ -38,3 +38,7 @@
 # Requires Git 1.7.10
 [include]
 	path = ~/.gitlocal
+[filter "media"]
+	clean = git media clean %f
+	smudge = git media smudge %f
+	required = true
