@@ -10,6 +10,7 @@
 		".git",
 		"node_modules"
 	],
+	"font_size": 11,
 	"highlight_line": true,
 	"ignored_packages":
 	[

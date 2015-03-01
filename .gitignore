@@ -1,3 +1,5 @@
 *.cache
 dotfiles/sublime/User/Package Control.last-run
 dotfiles/sublime/User/Package Control.system-ca-bundle
+dotfiles/sublime/User/Package Control.merged-ca-bundle
+dotfiles/sublime/User/Package Control.user-ca-bundle
