@@ -6,6 +6,7 @@
 	"installed_packages":
 	[
 		"Better CoffeeScript",
+		"Chain of Command",
 		"Color Highlighter",
 		"DocBlockr",
 		"Emmet",
@@ -14,6 +15,8 @@
 		"MarkdownEditing",
 		"Package Control",
 		"PHP-Twig",
+		"ReactJS",
+		"RegReplace",
 		"Stylus",
 		"SublimeLinter",
 		"SublimeLinter-jscs"
