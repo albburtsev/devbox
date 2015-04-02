@@ -60,6 +60,11 @@ if [[ "$pm" != 'unknown' ]]; then
         npm install -g yo
     }
 
+    command -v replace >/dev/null || {
+    	echo " > Install replace"
+    	npm install replace -g
+    }
+
     echo "All required packages installed!"
 else
 	echo "Package manager not detected. Sad :-("
