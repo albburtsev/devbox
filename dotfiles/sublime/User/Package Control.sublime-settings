@@ -5,6 +5,7 @@
 	],
 	"installed_packages":
 	[
+		"Babel",
 		"Better CoffeeScript",
 		"Chain of Command",
 		"Color Highlighter",

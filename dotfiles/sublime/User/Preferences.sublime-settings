@@ -20,5 +20,6 @@
 	[
 		120
 	],
-	"save_on_focus_lost": true
+	"save_on_focus_lost": true,
+	"translate_tabs_to_spaces": true
 }
