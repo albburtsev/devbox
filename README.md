@@ -10,7 +10,7 @@ For Mac OS installs [Homebrew](http://mxcl.github.com/homebrew/) too.
 Usage:
 
 ```
-curl https://raw.github.com/albburtsev/devbox/master/bigbang.sh | sh
+curl https://raw.githubusercontent.com/albburtsev/devbox/master/bigbang.sh | sh
 ```
 
 ## Dotfiles
@@ -21,7 +21,7 @@ Based on [sapegin/dotfiles](https://github.com/sapegin/dotfiles).
 Usage:
 
 ```
-curl https://raw.github.com/albburtsev/devbox/master/dotfiles.sh | sh
+curl https://raw.githubusercontent.com/albburtsev/devbox/master/dotfiles.sh | sh
 ```
 
 ## Stuff
@@ -33,5 +33,5 @@ Installs different bash tools:
 Usage:
 
 ```
-curl https://raw.github.com/albburtsev/devbox/master/stuff.sh | sh
+curl https://raw.githubusercontent.com/albburtsev/devbox/master/stuff.sh | sh
 ```
