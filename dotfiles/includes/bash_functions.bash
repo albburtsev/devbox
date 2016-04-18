@@ -5,6 +5,20 @@ function md() {
 	mkdir -p "$@" && cd "$@"
 }
 
+# Show weather forecast (by default for Moscow)
+# Usage:
+# 	weather
+# 	weather Berlin
+#
+function weather() {
+	if [ -z "$1" ]
+	then city="Moscow"
+	else city=$1
+	fi
+
+	curl -4 "wttr.in/$city"
+}
+
 # Find shorthand
 #function f() {
 #    find . -name "$1"
