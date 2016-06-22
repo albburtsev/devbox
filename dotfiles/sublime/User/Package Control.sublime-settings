@@ -1,5 +1,6 @@
 {
 	"auto_upgrade_last_run": null,
+	"bootstrapped": true,
 	"in_process_packages":
 	[
 	],
@@ -18,6 +19,7 @@
 		"NodeRequirer",
 		"Package Control",
 		"PHP-Twig",
+		"Pretty JSON",
 		"ReactJS",
 		"RegReplace",
 		"Stylus",
