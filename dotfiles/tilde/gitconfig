@@ -31,6 +31,8 @@
 	ignore = !([ ! -e .gitignore ] && touch .gitignore) | echo $2 >> .gitignore
 	this = !git init && git add . && git commit -m \"initial commit\"
 	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+	go = !git checkout $1 && git pull origin
+	gogo = !git fetch && (git branch -D $1 || true) && git checkout
 [push]
 	default = current
 
