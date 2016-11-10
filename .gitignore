@@ -4,3 +4,4 @@ dotfiles/sublime/User/Package Control.system-ca-bundle
 dotfiles/sublime/User/Package Control.merged-ca-bundle
 dotfiles/sublime/User/Package Control.user-ca-bundle
 dotfiles/sublime/User/Color Highlighter/
+dotfiles/sublime/User/*.crt
