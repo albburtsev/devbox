@@ -1,5 +1,14 @@
 # Based on https://github.com/sapegin/dotfiles/blob/master/includes/bash_functions.bash
 
+# Ban npm if project uses Yarn
+npm() {
+    if [ -f "yarn.lock" ]; then
+        echo "$(tput sgr 0 1)$(tput setaf 1)You should use Yarn for this project.$(tput sgr0)"
+        return
+    fi
+    command npm $@
+}
+
 # Create a new directory and enter it
 function md() {
 	mkdir -p "$@" && cd "$@"
