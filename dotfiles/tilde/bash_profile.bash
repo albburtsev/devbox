@@ -76,8 +76,8 @@ command -v brew >/dev/null 2>&1 && [ -r "$(brew --prefix)/etc/bash_completion" ]
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "~/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
-# mcedit is default editor
-export EDITOR='mcedit'
+# VIM is default editor
+export EDITOR='vim'
 
 # Tell ls to be colourful
 export CLICOLOR=1
